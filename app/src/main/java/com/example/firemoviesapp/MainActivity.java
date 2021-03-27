@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.firemoviesapp.Adapters.MoviesAdapter;
 import com.example.firemoviesapp.Apis.MovieApiClient;
+import com.example.firemoviesapp.Models.MovieModel;
 import com.example.firemoviesapp.Models.Results;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         recyclerView = findViewById(R.id.popRecycler);
 
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         RetriveMovies(API_KEY);
 
     }
@@ -47,23 +48,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void RetriveMovies(String apiKey) {
 
-        Call<Results> call;
+        Call<MovieModel> call;
 
         call = MovieApiClient.getInstance().getApi().getPopmovies(apiKey);
 
-        call.enqueue(new Callback<Results>() {
+        call.enqueue(new Callback<MovieModel>() {
             @Override
-            public void onResponse(Call<Results> call, Response<Results> response) {
+            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+                if (response.isSuccessful() && response.body().getResults() != null) {
 
-                if (response.isSuccessful()) {
-
+                    resultsList.clear();
+                    resultsList = response.body().getResults();
                     moviesAdapter = new MoviesAdapter(MainActivity.this, resultsList);
                     recyclerView.setAdapter(moviesAdapter);
                 }
             }
 
             @Override
-            public void onFailure(Call<Results> call, Throwable t) {
+            public void onFailure(Call<MovieModel> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

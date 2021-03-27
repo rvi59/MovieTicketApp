@@ -1,5 +1,6 @@
 package com.example.firemoviesapp.Apis;
 
+import com.example.firemoviesapp.Models.MovieModel;
 import com.example.firemoviesapp.Models.Results;
 
 import retrofit2.Call;
@@ -12,7 +13,7 @@ public interface MovieInterface {
 
 
     @GET("movie/popular")
-    Call<Results> getPopmovies(
+    Call<MovieModel> getPopmovies(
             @Query("apikey") String apikey
     );
 
