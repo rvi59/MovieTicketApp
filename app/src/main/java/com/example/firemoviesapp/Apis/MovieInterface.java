@@ -11,10 +11,9 @@ public interface MovieInterface {
 
 
 
-    @GET("/popular")
-    Call<Results> getHeadlines(
-            @Query("apikey") String apikey,
-            @Query("language") String language
+    @GET("movie/popular")
+    Call<Results> getPopmovies(
+            @Query("apikey") String apikey
     );
 
 
