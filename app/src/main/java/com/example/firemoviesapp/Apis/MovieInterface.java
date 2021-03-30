@@ -14,7 +14,7 @@ public interface MovieInterface {
 
     @GET("movie/popular")
     Call<MovieModel> getPopmovies(
-            @Query("apikey") String apikey
+            @Query("api_key") String apikey
     );
 
 

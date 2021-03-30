@@ -43,7 +43,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
         Results results = resultsList.get(position);
 
         String imgURL =results.getBackdrop_path();
-        Picasso.get().load(imgURL).into(holder.imageView);
+        Picasso.get().load("https://images.tmdb.org/t/p/w500"+imgURL).into(holder.imageView);
         holder.textView.setText(results.getOriginalTitle());
         
         holder.cardView.setOnClickListener(new View.OnClickListener() {
