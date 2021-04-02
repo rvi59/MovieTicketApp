@@ -1,6 +1,7 @@
 package com.example.firemoviesapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.firemoviesapp.DetailsActivity;
 import com.example.firemoviesapp.Models.Results;
 import com.example.firemoviesapp.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,13 +45,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
         Results results = resultsList.get(position);
 
         String imgURL =results.getBackdrop_path();
-        Picasso.get().load("https://images.tmdb.org/t/p/w500"+imgURL).into(holder.imageView);
+        //Picasso.get().load("https://images.tmdb.org/t/p/w500"+imgURL).into(holder.imageView);
+        Glide.with(context).load("https://images.tmdb.org/t/p/w500"+imgURL).into(holder.imageView);
         holder.textView.setText(results.getOriginalTitle());
-        
+
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Movie is Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra("details",results);
+                context.startActivity(intent);
             }
         });
 

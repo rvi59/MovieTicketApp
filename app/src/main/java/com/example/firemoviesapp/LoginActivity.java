@@ -19,12 +19,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     private GoogleSignInClient mSignInClient;
     private static final int RC_SIGN_IN = 99;
+    private FirebaseFirestore firebaseFirestore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         buttonGoogleLogin = findViewById(R.id.btnloginwithGoogle);
         progressBar       = findViewById(R.id.loginProgress);
         mAuth             = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 
         if (mAuth.getCurrentUser() != null){
@@ -173,15 +183,40 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this, "Error "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void updateUI(FirebaseUser user) {
+        String userId = user.getUid();
+        String mail = user.getEmail();
+        String name = user.getDisplayName();
+        String number = user.getPhoneNumber();
+
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("name",name);
+        map.put("email",mail);
+        map.put("phone",number);
+        documentReference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(LoginActivity.this, "Data not Inserted", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
