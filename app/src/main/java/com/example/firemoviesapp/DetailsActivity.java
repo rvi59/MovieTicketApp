@@ -59,24 +59,25 @@ TextView textViewTitle, textViewRating, textViewrelesedate, textViewPlot;
         buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomFluxDialog.confirmDialog(DetailsActivity.this)
-                        .setTextTitle("Confirm Title")
-                        .setTextMessage("This is a confirm message")
-                        .setImageDialog(R.drawable.poster)
-                        .setLeftButtonText("CANCEL")
-                        .setRightButtonText("OK")
-                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
-                            @Override
-                            public void onLeftClick() {
-                                Toast.makeText(DetailsActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onRightClick() {
-                                Toast.makeText(DetailsActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
+//                BottomFluxDialog.confirmDialog(DetailsActivity.this)
+//                        .setTextTitle("Confirm Title")
+//                        .setTextMessage("This is a confirm message")
+//                        .setImageDialog(R.drawable.poster)
+//                        .setLeftButtonText("CANCEL")
+//                        .setRightButtonText("OK")
+//                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
+//                            @Override
+//                            public void onLeftClick() {
+//                                Toast.makeText(DetailsActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            @Override
+//                            public void onRightClick() {
+//                                Toast.makeText(DetailsActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        })
+//                        .show();
+                startActivity(new Intent(DetailsActivity.this, SeatActivity.class));
             }
         });
 
