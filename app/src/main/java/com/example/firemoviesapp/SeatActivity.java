@@ -2,6 +2,7 @@ package com.example.firemoviesapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -140,9 +141,19 @@ public class SeatActivity extends AppCompatActivity implements View.OnClickListe
             if (selectedIds.contains(view.getId() + ",")) {
                 selectedIds = selectedIds.replace(+view.getId() + ",", "");
                 view.setBackgroundResource(R.drawable.ic_seats_book);
+
+
+
             } else {
                 selectedIds = selectedIds + view.getId() + ",";
                 view.setBackgroundResource(R.drawable.ic_seats_selected);
+
+
+                    Intent intent = new Intent(getApplicationContext(),BookingActivity.class);
+                    intent.putExtra("seat",selectedIds);
+                    startActivity(intent);
+
+
             }
         } else if ((int) view.getTag() == STATUS_BOOKED) {
             Toast.makeText(this, "Seat " + view.getId() + " is Booked", Toast.LENGTH_SHORT).show();
