@@ -11,11 +11,16 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.example.firemoviesapp.Models.Results;
+import com.haerul.bottomfluxdialog.BottomFluxDialog;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +32,8 @@ public class BookingActivity extends AppCompatActivity {
     TextView textViewName, textViewCalender, textViewTime, textViewSeat, textViewTotal;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String date;
+    private Button  buttonPay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,9 @@ public class BookingActivity extends AppCompatActivity {
 
         String seats = getIntent().getStringExtra("seat");
         //Toast.makeText(this, "" + seats, Toast.LENGTH_SHORT).show();
+
+        Results results = getIntent().getParcelableExtra("details");
+
 
 
 
@@ -51,7 +61,13 @@ public class BookingActivity extends AppCompatActivity {
         textViewTime        =  findViewById(R.id.tvTime);
         textViewSeat        =  findViewById(R.id.tvSeat);
         textViewTotal       =  findViewById(R.id.tvTotal);
+        buttonPay           =  findViewById(R.id.btnPayment);
 
+
+        String img_url = results.getBackdrop_path();
+        Glide.with(getApplicationContext()).load("https://images.tmdb.org/t/p/w500"+img_url).into(imageViewPoster);
+        String title = results.getOriginalTitle();
+        textViewName.setText(title);
         textViewSeat.setText(seats);
 
 
@@ -94,6 +110,32 @@ public class BookingActivity extends AppCompatActivity {
                     }
                 },12,0,false);
                 timePickerDialog.show();
+            }
+        });
+
+
+        buttonPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BottomFluxDialog.confirmDialog(BookingActivity.this)
+
+                        .setTextTitle("Confirm Title")
+                        .setTextMessage("This is a confirm message")
+                        .setImageDialog(R.drawable.poster)
+                        .setLeftButtonText("CANCEL")
+                        .setRightButtonText("OK")
+                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
+                            @Override
+                            public void onLeftClick() {
+                                Toast.makeText(BookingActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onRightClick() {
+                                Toast.makeText(BookingActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
             }
         });
 
