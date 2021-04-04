@@ -32,7 +32,7 @@ public class BookingActivity extends AppCompatActivity {
     TextView textViewName, textViewCalender, textViewTime, textViewSeat, textViewTotal;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String date;
-    private Button  buttonPay;
+    private Button  buttonBook;
 
 
     @Override
@@ -46,7 +46,9 @@ public class BookingActivity extends AppCompatActivity {
         String seats = getIntent().getStringExtra("seat");
         //Toast.makeText(this, "" + seats, Toast.LENGTH_SHORT).show();
 
-        Results results = getIntent().getParcelableExtra("details");
+        //Results results = getIntent().getParcelableExtra("details");
+
+
 
 
 
@@ -61,13 +63,12 @@ public class BookingActivity extends AppCompatActivity {
         textViewTime        =  findViewById(R.id.tvTime);
         textViewSeat        =  findViewById(R.id.tvSeat);
         textViewTotal       =  findViewById(R.id.tvTotal);
-        buttonPay           =  findViewById(R.id.btnPayment);
+        buttonBook          =  findViewById(R.id.btnBook);
 
 
-        String img_url = results.getBackdrop_path();
-        Glide.with(getApplicationContext()).load("https://images.tmdb.org/t/p/w500"+img_url).into(imageViewPoster);
-        String title = results.getOriginalTitle();
-        textViewName.setText(title);
+        //String img_url = results.getBackdrop_path();
+        //Glide.with(getApplicationContext()).load("https://images.tmdb.org/t/p/w500"+img_url).into(imageViewPoster);
+       // textViewName.setText(results.getOriginalTitle());
         textViewSeat.setText(seats);
 
 
@@ -114,28 +115,49 @@ public class BookingActivity extends AppCompatActivity {
         });
 
 
-        buttonPay.setOnClickListener(new View.OnClickListener() {
+        buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomFluxDialog.confirmDialog(BookingActivity.this)
+//                BottomFluxDialog.confirmDialog(BookingActivity.this)
+//
+//                        .setTextTitle("Pay")
+//                        .setTextMessage("This is a confirm message")
+//                        .setImageDialog(R.drawable.poster)
+//                        .setLeftButtonText("CANCEL")
+//                        .setRightButtonText("OK")
+//                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
+//                            @Override
+//                            public void onLeftClick() {
+//                                Toast.makeText(BookingActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            @Override
+//                            public void onRightClick() {
+//                                Toast.makeText(BookingActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        })
+//                        .show();
 
-                        .setTextTitle("Confirm Title")
-                        .setTextMessage("This is a confirm message")
-                        .setImageDialog(R.drawable.poster)
-                        .setLeftButtonText("CANCEL")
-                        .setRightButtonText("OK")
-                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
+
+                BottomFluxDialog.inputDialog(BookingActivity.this)
+                        .setTextTitle("Pay through UPI")
+                        .setTextMessage("Enter Your UPI ID")
+                        .setRightButtonText("SUBMIT")
+                        .setInputListener(new BottomFluxDialog.OnInputListener() {
                             @Override
-                            public void onLeftClick() {
-                                Toast.makeText(BookingActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
+                            public void onSubmitInput(String text) {
+                                Toast.makeText(BookingActivity.this, "Ticket Booked", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
-                            public void onRightClick() {
-                                Toast.makeText(BookingActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
+                            public void onCancelInput() {
+                                Toast.makeText(BookingActivity.this, "Button Cancel Clicked!", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .show();
+
+
+
             }
         });
 

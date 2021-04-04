@@ -164,7 +164,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnPayment"
+        android:id="@+id/btnBook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Pay"
