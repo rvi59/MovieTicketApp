@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -22,8 +23,11 @@ import com.bumptech.glide.Glide;
 import com.example.firemoviesapp.Models.Results;
 import com.haerul.bottomfluxdialog.BottomFluxDialog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class BookingActivity extends AppCompatActivity {
@@ -33,6 +37,9 @@ public class BookingActivity extends AppCompatActivity {
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String date;
     private Button  buttonBook;
+    private int getSize;
+    SharedPreferences mSharedPreferences;
+
 
 
     @Override
@@ -40,19 +47,22 @@ public class BookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
+        mSharedPreferences = getSharedPreferences("MovieInfo", MODE_PRIVATE);
+
+        String image = mSharedPreferences.getString("imageName","");
+        String Namee = mSharedPreferences.getString("movName","");
+
+
+
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Payment");
 
+        //Get Price according to seat selected
         String seats = getIntent().getStringExtra("seat");
-        //Toast.makeText(this, "" + seats, Toast.LENGTH_SHORT).show();
-
-        //Results results = getIntent().getParcelableExtra("details");
-
-
-
-
-
-
+        String[] element = seats.split(",");
+        List<String> fixedLength = Arrays.asList(element);
+        ArrayList<String> stringArrayList = new ArrayList<>(fixedLength);
+        getSize = stringArrayList.size();
 
 
         imageViewPoster     = findViewById(R.id.imgPoster);
@@ -65,10 +75,13 @@ public class BookingActivity extends AppCompatActivity {
         textViewTotal       =  findViewById(R.id.tvTotal);
         buttonBook          =  findViewById(R.id.btnBook);
 
+        int getFinalPrice = getSize*150;
+        textViewTotal.setText(String.valueOf(getFinalPrice));
+
 
         //String img_url = results.getBackdrop_path();
-        //Glide.with(getApplicationContext()).load("https://images.tmdb.org/t/p/w500"+img_url).into(imageViewPoster);
-       // textViewName.setText(results.getOriginalTitle());
+        Glide.with(BookingActivity.this).load("https://images.tmdb.org/t/p/w500"+image).into(imageViewPoster);
+        textViewName.setText(Namee);
         textViewSeat.setText(seats);
 
 
@@ -87,7 +100,6 @@ public class BookingActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         month = month+1;
                         date = dayOfMonth+"-"+month+"-"+year;
-                        //Toast.makeText(BookingActivity.this, ""+date, Toast.LENGTH_SHORT).show();
                         textViewCalender.setText(date);
                     }
                 },mYear,mMonth,mDay);
@@ -118,26 +130,6 @@ public class BookingActivity extends AppCompatActivity {
         buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                BottomFluxDialog.confirmDialog(BookingActivity.this)
-//
-//                        .setTextTitle("Pay")
-//                        .setTextMessage("This is a confirm message")
-//                        .setImageDialog(R.drawable.poster)
-//                        .setLeftButtonText("CANCEL")
-//                        .setRightButtonText("OK")
-//                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
-//                            @Override
-//                            public void onLeftClick() {
-//                                Toast.makeText(BookingActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onRightClick() {
-//                                Toast.makeText(BookingActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .show();
-
 
                 BottomFluxDialog.inputDialog(BookingActivity.this)
                         .setTextTitle("Pay through UPI")

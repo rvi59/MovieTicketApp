@@ -3,7 +3,9 @@ package com.example.firemoviesapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,14 +23,21 @@ import java.util.Objects;
 public class DetailsActivity extends AppCompatActivity {
 
 
-Button buttonBook;
-ImageView imageView;
-TextView textViewTitle, textViewRating, textViewrelesedate, textViewPlot;
+    Button buttonBook;
+    ImageView imageView;
+    TextView textViewTitle, textViewRating, textViewrelesedate, textViewPlot;
+
+    SharedPreferences mSharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        mSharedPreferences = getSharedPreferences("MovieInfo", MODE_PRIVATE);
+
+
 
         Results results = getIntent().getParcelableExtra("details");
 
@@ -46,42 +55,43 @@ TextView textViewTitle, textViewRating, textViewrelesedate, textViewPlot;
         textViewPlot = findViewById(R.id.plotfromDetails);
 
 
-
+        String movieName = results.getOriginalTitle();
         String img_url = results.getBackdrop_path();
-        Glide.with(getApplicationContext()).load("https://images.tmdb.org/t/p/w500"+img_url).into(imageView);
-        textViewTitle.setText(results.getOriginalTitle());
+        Glide.with(DetailsActivity.this).load("https://images.tmdb.org/t/p/w500" + img_url).into(imageView);
+        textViewTitle.setText(movieName);
         textViewRating.setText(results.getVoteAverage().toString());
         textViewrelesedate.setText(results.getReleaseDate());
-        textViewPlot.setText(results.getOverview()+"***************************************************************" +
+        textViewPlot.setText(results.getOverview() + "***************************************************************" +
                 "******************************************************************************");
+
+
+//        Intent intent = new Intent(DetailsActivity.this,SeatActivity.class);
+//        intent.putExtra("img",img_url);
+//        intent.putExtra("name", movieName);
+//        startActivity(intent);
 
 
         buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                BottomFluxDialog.confirmDialog(DetailsActivity.this)
-//                        .setTextTitle("Confirm Title")
-//                        .setTextMessage("This is a confirm message")
-//                        .setImageDialog(R.drawable.poster)
-//                        .setLeftButtonText("CANCEL")
-//                        .setRightButtonText("OK")
-//                        .setConfirmListener(new BottomFluxDialog.OnConfirmListener() {
-//                            @Override
-//                            public void onLeftClick() {
-//                                Toast.makeText(DetailsActivity.this, "Left Button Clicked!", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onRightClick() {
-//                                Toast.makeText(DetailsActivity.this, "Right Button Clicked!", Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .show();
+
+
+//                Intent intent = new Intent(DetailsActivity.this,SeatActivity.class);
+//                intent.putExtra("img",img_url);
+//                intent.putExtra("name", movieName);
+//                startActivity(intent);
+
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString("imageName", img_url);
+                editor.putString("movName", movieName);
+                editor.apply();
+
+
+
+
                 startActivity(new Intent(DetailsActivity.this, SeatActivity.class));
             }
         });
-
-
 
 
     }

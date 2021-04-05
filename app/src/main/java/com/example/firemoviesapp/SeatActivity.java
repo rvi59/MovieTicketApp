@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SeatActivity extends AppCompatActivity implements View.OnClickListener {
 
     ViewGroup layout;
+    Button button;
 
     String seats = "_UUUUUUAAAAARRRR_/"
             + "_________________/"
@@ -53,6 +55,33 @@ public class SeatActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_seat);
 
         layout = findViewById(R.id.layoutSeat);
+        button = findViewById(R.id.gotoBooking);
+
+
+
+//        Intent intent = new Intent();
+//        String myImg = intent.getStringExtra("img");
+//        String myName = intent.getStringExtra("name");
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+                Intent intent = new Intent(getApplicationContext(), BookingActivity.class);
+                intent.putExtra("seat", selectedIds);
+                startActivity(intent);
+
+//                Intent intent1 = new Intent(SeatActivity.this,BookingActivity.class);
+//                intent1.putExtra("img1",myImg);
+//                intent1.putExtra("name1", myName);
+//                intent1.putExtra("seat", selectedIds);
+//                startActivity(intent1);
+            }
+        });
+
 
         seats = "/" + seats;
 
@@ -143,15 +172,14 @@ public class SeatActivity extends AppCompatActivity implements View.OnClickListe
                 view.setBackgroundResource(R.drawable.ic_seats_book);
 
 
-
             } else {
                 selectedIds = selectedIds + view.getId() + ",";
                 view.setBackgroundResource(R.drawable.ic_seats_selected);
 
 
-                    Intent intent = new Intent(getApplicationContext(),BookingActivity.class);
-                    intent.putExtra("seat",selectedIds);
-                    startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), BookingActivity.class);
+//                intent.putExtra("seat", selectedIds);
+//                startActivity(intent);
 
 
             }
