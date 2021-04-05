@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
-    final String API_KEY = "0e065b761192861b3598e9397c0a1958";
+    final String API_KEY = "Your API KEY";
     List<Results> resultsList = new ArrayList<>();
     MoviesAdapter moviesAdapter;
 
