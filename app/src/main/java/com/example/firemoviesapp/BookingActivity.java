@@ -1,5 +1,6 @@
 package com.example.firemoviesapp;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -56,6 +58,7 @@ public class BookingActivity extends AppCompatActivity {
 
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Payment");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Get Price according to seat selected
         String seats = getIntent().getStringExtra("seat");
@@ -134,7 +137,7 @@ public class BookingActivity extends AppCompatActivity {
                 BottomFluxDialog.inputDialog(BookingActivity.this)
                         .setTextTitle("Pay through UPI")
                         .setTextMessage("Enter Your UPI ID")
-                        .setRightButtonText("SUBMIT")
+                        .setRightButtonText("Pay")
                         .setInputListener(new BottomFluxDialog.OnInputListener() {
                             @Override
                             public void onSubmitInput(String text) {
@@ -153,10 +156,21 @@ public class BookingActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(BookingActivity.this, SeatActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+                return true;
 
-
-
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
 }
