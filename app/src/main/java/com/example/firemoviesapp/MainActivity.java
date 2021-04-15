@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                     resultsList.clear();
                     resultsList = response.body().getResults();
+                    Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                     moviesAdapter = new MoviesAdapter(MainActivity.this, resultsList);
                     recyclerView.setAdapter(moviesAdapter);
                 }
